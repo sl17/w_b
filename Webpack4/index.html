@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/reset.css"/>
+	</head>
+	<body>
+		<div class="content">
+			<!--left-->
+			<div class="content_left">
+				<p class="introduction">webpack入门</p>
+				<ul class="content_left_ul">
+					<li class="content_left_ul_tite"><a href="#concept">webpack的几个基本的概念</a></li>
+					<li class="content_left_ul_cont">
+						<p class="p_sel"><a href="#Development_model">mode开发模式</a></p>
+						<p><a href="#Entrance_file">入口文件</a></p>
+						<p><a href="#Output_file">输出</a></p>
+						<p><a href="#Loader">loader</a></p>
+						<p><a href="#Plugin">插件(plugins)</a></p>
+					</li>
+				</ul>
+			</div>
+			<!--right-->
+			<div class="content_right">
+				<div class="concept_1">
+					<h1 id="concept" class="content_right_h1">webpack的几个基本的概念</h1>
+					<h2 id="Development_model" class="content_right_h2">mode开发模式
+						<p>webpack 提供 mode 配置选项，配置 webpack 相应模式的内置优化。</p>
+					</h2>
+					<div class="code">
+						<code>webpack.config.js</code>
+						<pre>
+module.exports = {
+  mode: "production", <span>//产品模式  会压缩和优化</span>
+  mode: "development", <span>//开发模式</span>
+  mode: "none", <span>// no defaults</span>
+}
+						</pre>
+					</div>
+					<h2 id="Entrance_file" class="content_right_h2">入口文件
+						<p>entry 对象是用于 webpack 查找启动并构建 bundle。其上下文是入口文件所处的目录的绝对路径的字符串。</p>
+					</h2>
+					<div class="code">
+						<code>webpack.config.js</code>
+						<pre>
+module.exports = {
+  entry: "./app/entry",<span> // string | object | array</span>
+  entry: ["./app/entry1", "./app/entry2"],
+  entry: {
+    a: "./app/entry-a",
+    b: ["./app/entry-b1", "./app/entry-b2"]
+  },
+}
+						</pre>
+					</div>
+					<h2 id="Output_file" class="content_right_h2">输出（output）
+						<p>output 属性告诉 webpack 在哪里输出它所创建的 bundles，以及如何命名这些文件。</p>
+					</h2>
+					<div class="code">
+						<code>webpack.config.js</code>
+						<pre>
+const path = require('path');
+module.exports = {
+  output: {
+    <span>// webpack 如何输出结果的相关选项</span>
+
+    path: path.resolve(__dirname, "dist"), <span>// string</span>
+    <span>// 所有输出文件的目标路径</span>
+    <span>// 必须是绝对路径（使用 Node.js 的 path 模块）</span>
+
+    filename: "bundle.js", <span>// string</span>
+    filename: "[name].js", <span>// 用于多个入口点(entry point)（出口点？）</span>
+    filename: "[chunkhash].js", <span>// 用于长效缓存</span>
+    <span>// 「入口分块(entry chunk)」的文件名模板（出口分块？）</span>
+
+    publicPath: "/assets/", <span>// string</span>
+    publicPath: "",
+    publicPath: "https://cdn.example.com/",
+    <span>// 输出解析文件的目录，url 相对于 HTML 页面</span>
+
+    library: "MyLibrary", <span>// string,</span>
+    <span>// 导出库(exported library)的名称</span>
+
+    libraryTarget: "umd", <span>// 通用模块定义</span>
+  }
+}
+						</pre>
+					</div>
+					<h2 id="Loader" class="content_right_h2">loader
+						<p>loader 让 webpack 能够去处理那些非 JavaScript 文件（webpack 自身只理解 JavaScript）。loader 可以将所有类型的文件转换为 webpack 能够处理的有效模块，然后你就可以利用 webpack 的打包能力，对它们进行处理。</p>
+						<p>本质上，webpack loader 将所有类型的文件，转换为应用程序的依赖图（和最终的 bundle）可以直接引用的模块。</p>
+						<p>
+							在更高层面，在 webpack 的配置中 loader 有两个目标：</p>
+						
+						<p><span>1. <i>test</i> 属性，用于标识出应该被对应的 loader 进行转换的某个或某些文件。</span></p>
+						<p><span>2. <i>use</i> 属性，表示进行转换时，应该使用哪个 loader。</span></p>
+					</h2>
+					<div class="code">
+						<code>webpack.config.js</code>
+						<pre>
+module: {
+  rules: [
+    { test: /\.txt$/, use: 'raw-loader' }
+  ]
+}
+						</pre>
+					</div>
+					<p class="air_10"></p>
+					<p class="p_text">以上配置中，对一个单独的 module 对象定义了 rules 属性，里面包含两个必须属性：test 和 use。这告诉 webpack 编译器(compiler) 如下信息：</p>
+					<p class="p_reference">
+						“嘿，webpack 编译器，当你碰到「在 <i>require()</i>/<i>import</i> 语句中被解析为 '.txt' 的路径」时，在你对它打包之前，先使用 <i>raw-loader</i> 转换一下。”
+					</p>
+					<div class="warning">
+						在 webpack 配置中定义 loader 时，要定义在 module.rules 中，而不是 rules。
+					</div>
+					<h2 id="Plugin" class="content_right_h2">插件
+						<p>想要使用一个插件，你只需要<i>require()</i>  它，然后把它添加到 <i>plugins</i> 数组中。多数插件可以通过选项(option)自定义。你也可以在一个配置文件中因为不同目的而多次使用同一个插件，这时需要通过使用<i> new</i> 操作符来创建它的一个实例。</p>
+					</h2>
+					<div class="code">
+						<code>webpack.config.js</code>
+						<pre>
+const HtmlWebpackPlugin = require('html-webpack-plugin'); <span>// 通过 npm 安装</span>
+const webpack = require('webpack'); <span>// 用于访问内置插件</span>
+
+const config = {
+  module: {
+    rules: [
+      { test: /\.txt$/, use: 'raw-loader' }
+    ]
+  },
+  plugins: [
+    new HtmlWebpackPlugin({template: './src/index.html'})
+  ]
+};
+
+module.exports = config;
+						</pre>
+					</div>
+					
+				</div>
+				
+			</div>
+		</div>
+	</body>
+	<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$(".content_left_ul_cont p").click(function(){
+				$(this).addClass("p_sel").siblings("p").removeClass("p_sel")
+			})
+			let throttle = (method, context) => {
+				clearTimeout(method.tId);
+		 		method.tId = setTimeout(function(){
+			 		method.call(context);
+			 	}, 150);
+			}
+			function scroll(){
+				let [arr, num, min] = [[], 0, 0];
+				$(".content_right_h2").each(function(){
+					num = $(this).offset().top-$(window).scrollTop();
+					arr.push(Math.abs(num));
+				})
+				min = arr.indexOf(Math.min.apply(null,arr));
+				$(".content_left_ul").find("p").eq(min).addClass("p_sel").siblings("p").removeClass("p_sel");
+			}
+			$(document).scroll(function(){ 
+				throttle(scroll)
+			})
+		})
+	</script>
+</html>

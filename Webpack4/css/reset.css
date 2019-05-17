@@ -1,0 +1,70 @@
+/*-----------------clear default style start-------------------*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,rt,rp,bdi,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video ,section,nav,footer{margin: 0;padding: 0;border: 0;font-size: 100%;font: inherit; }
+table, tbody, tfoot, thead, tr, th, td{border: 1px solid #fafafa;}
+em,i,cite {font-style: normal;}
+img{border: none;}
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {display: block;}
+body {line-height: 1;}
+ol, ul, li{list-style: none;}
+blockquote, q {quotes: none;}
+blockquote:before, blockquote:after,
+q:before, q:after {content: '';content: none;}
+table {border-collapse: collapse;border-spacing: 0;}
+i,em {display: inline-block;font-style: none;}
+img{width: 100%;border: none;}
+a {text-decoration: none;-webkit-tap-highlight-color: transparent;-webkit-touch-callout: none;-webkit-user-select: none;}
+input:focus,input,select:focus,select,textarea:focus,textarea,button:focus,button{outline:none;-webkit-border-radius: 0;}
+input,button{-webkit-border-radius:0; margin: 0;padding: 0;border: none;}
+input[type=button],button,input[type=submit]{-webkit-appearance: none;}
+body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;} 
+input[type="search"]{-webkit-appearance:none;}
+input::-webkit-search-cancel-button {display: none;}
+input[type="text"],input[type="password"]{-webkit-box-shadow: 0 0 10px 10px #fff inset;box-shadow: 0 0 10px 10px #fff inset;} 
+input:-webkit-autofill {-webkit-box-shadow: 0 0 0 80px #fff inset;-moz-box-shadow: 0 0 0 80px #fff inset;-ms-box-shadow: 0 0 0 80px #fff inset;}
+::-webkit-input-placeholder {color:#999;}
+:-moz-placeholder {color:#999;}
+::-moz-placeholder {color:#999;}
+:-ms-input-placeholder {color:#999;}
+/*--------------------clear default style end-------------------*/
+html{width: 100%;height: 100%;}
+body{width: 100%;min-height: 100%;font-size: 14px;color: #323232;}
+a{color: #323232;}
+.introduction{font-size: 18px;color: #555;text-align: center;line-height: 40px;font-weight: bold;}
+.content{width: 900px;margin: 0 auto;}
+/*------left-------left-------left-----*/
+.content_left{width: 250px;border-right: 1px solid #999999;position: fixed;left: auto;top: 0;bottom: 0;}
+.content_left_ul_tite{font-size: 16px;line-height: 38px;}
+.content_left_ul_cont p{margin:0 10px 0 20px;line-height: 26px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;border-right: 1px solid #fff;padding-left: 10px;}
+.content_left_ul_cont p a{display: block;}
+.content_left_ul_cont p:hover a{text-decoration: underline;}
+.content_left_ul_cont p.p_sel{margin:0 20px 0 20px;line-height: 26px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;border-right: 2px solid #42b983;background: #fafffd;}
+.content_left_ul_cont p.p_sel a{color: #42b983;}
+
+/*-------right------right----right-------*/
+.content_right{margin-left: 290px;}
+.content_right_h1{font-size: 22px;height: 40px;line-height: 70px;font-weight: bold;color: #555;}
+.content_right_h2{font-size: 18px;line-height: 40px;font-weight: bold;color: #555;margin-top: 20px;}
+p.p_text,.content_right_h2 p{font-size: 14px;line-height: 20px;font-weight: normal;margin-bottom: 10px;}
+p.air_10{height: 18px;}
+p.p_reference{border-left: 3px solid #ccc;font-size: 14px;padding: 10px 20px;line-height: 20px;background: #f7f7f7;}
+.content_right_h2 p span{margin-left: 20px;}
+.content_right_h2 p i{display: inline-block;padding: 0px 8px;background: #f4f5f6;border-radius: 3px;}
+.code{background: #2B3A42;color: #fff;padding: 20px;border-radius: 5px;box-shadow: 6px 5px 19px 0px #b0b3b5;}
+code{color: #b4e22d;margin-bottom: 10px;display: block;}
+code:before{content: '文件：';color: #b4e22d;}
+pre{line-height: 20px;text-align: left;color: #a5cee1;font-family: Consolas, Monaco, 'Andale Mono', monospace;direction: ltr;}
+pre span{color: #7b7b7b ;}
+.warning{background-color: #fbedb7;color: #8c8466;line-height: 20px;padding: 20px;margin-top: 20px;}
