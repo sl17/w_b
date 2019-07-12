@@ -40,7 +40,7 @@ input:-webkit-autofill {-webkit-box-shadow: 0 0 0 80px #fff inset;-moz-box-shado
 :-ms-input-placeholder {color:#999;}
 /*--------------------clear default style end-------------------*/
 html{width: 100%;height: 100%;}
-body{width: 100%;min-height: 100%;font-size: 14px;color: #323232;}
+body{width: 100%;min-height: 100%;font-size: 14px;color: #323232;position: relative;}
 a{color: #323232;}
 .introduction{font-size: 18px;color: #555;text-align: center;line-height: 40px;font-weight: bold;}
 .content{width: 900px;margin: 0 auto;}
@@ -64,10 +64,14 @@ p.p_reference{border-left: 3px solid #ccc;font-size: 14px;padding: 10px 20px;lin
 .content_right_h2 p i{display: inline-block;padding: 0px 8px;background: #f4f5f6;border-radius: 3px;}
 .code{background: #2B3A42;color: #fff;padding: 20px;border-radius: 5px;box-shadow: 6px 5px 19px 0px #b0b3b5;}
 code{color: #b4e22d;margin-bottom: 10px;display: block;}
+u{color: #b4e22d;display: block;text-decoration: none;}
 code:before{content: '文件：';color: #b4e22d;}
 pre{line-height: 20px;text-align: left;color: #a5cee1;font-family: Consolas, Monaco, 'Andale Mono', monospace;direction: ltr;}
 pre span{color: #7b7b7b ;}
+pre span em{color: #ff6464 ;}
 .warning{background-color: #fbedb7;color: #8c8466;line-height: 20px;padding: 20px;margin-top: 20px;}
+
+
 /*new strat*/
 .indicator {
     position: absolute;
