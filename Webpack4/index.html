@@ -2,10 +2,11 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title></title>
+		<title>Webpack</title>
 		<link rel="stylesheet" type="text/css" href="css/reset.css"/>
 	</head>
 	<body>
+		<div class="indicator"></div>
 		<div class="content">
 			<!--left-->
 			<div class="content_left">
@@ -13,11 +14,19 @@
 				<ul class="content_left_ul">
 					<li class="content_left_ul_tite"><a href="#concept">webpack的几个基本的概念</a></li>
 					<li class="content_left_ul_cont">
-						<p class="p_sel"><a href="#Development_model">mode开发模式</a></p>
-						<p><a href="#Entrance_file">入口文件</a></p>
-						<p><a href="#Output_file">输出</a></p>
+						<p class="p_sel"><a href="#webpack_installation">webpack安装</a></p>
+						<p><a href="#Development_model">开发模式mode</a></p>
+						<p><a href="#Entrance_file">入口文件entry</a></p>
+						<p><a href="#Output_file">输出output</a></p>
+						<p><a href="#webpack_service">服务配置devServer</a></p>
+						<p><a href="#proxy">跨域问题proxy</a></p>
+						<!--<p><a href="#webpack_plugin">[插件]自动打包生成</a></p>-->
 						<p><a href="#Loader">loader</a></p>
+						<p><a href="#source_map">源码映射source-map</a></p>
+						<p><a href="#watch">监控watch</a></p>
+						<p><a href="#resolve">解析resolve</a></p>
 						<p><a href="#Plugin">插件(plugins)</a></p>
+						<p><a href="#webpack_other">其他</a></p>
 					</li>
 				</ul>
 			</div>
@@ -25,6 +34,30 @@
 			<div class="content_right">
 				<div class="concept_1">
 					<h1 id="concept" class="content_right_h1">webpack的几个基本的概念</h1>
+					<h2 id="webpack_installation" class="content_right_h2">webpack安装
+						<p>1.先初始化一个文件</p>
+					</h2>
+					<div class="code">
+						
+						<pre>
+cd 当前目录
+npm init <span>//初始化一下  会产生一个 package.json 文件</span>	
+之后提示不用管 <span>//一路回车</span>
+直到...
+About to write to 目录\package.json:
+{
+  "name": "...",
+  "version": "1.0.0"
+  ...
+}
+Is this ok? (yes) <span>//回车 完成</span>
+
+安装webpack
+
+npm install webpack --save-dev
+npm install webpack-cli --save-dev <span>//webpack4.+ 版本需要安装webpack-cli </span>
+						</pre>
+					</div>
 					<h2 id="Development_model" class="content_right_h2">mode开发模式
 						<p>webpack 提供 mode 配置选项，配置 webpack 相应模式的内置优化。</p>
 					</h2>
@@ -66,6 +99,7 @@ module.exports = {
     <span>// webpack 如何输出结果的相关选项</span>
 
     path: path.resolve(__dirname, "dist"), <span>// string</span>
+    <span>//__dirname   以当前目录下产生一个 dist</span>
     <span>// 所有输出文件的目标路径</span>
     <span>// 必须是绝对路径（使用 Node.js 的 path 模块）</span>
 
@@ -87,6 +121,64 @@ module.exports = {
 }
 						</pre>
 					</div>
+					<h2 id="webpack_service" class="content_right_h2">服务配置
+						<p>开发中希望通过<i>localhost</i>方式访问，或者IP地址来访问</p>
+					</h2>
+					<div class="code">
+						<pre>
+<span>//安装webpack内置的开发服务   运行npm install webpack-dev-server --save-dev</span>
+npm install webpack-dev-server --save-dev
+<code>webpack.config.js</code>
+const path = require('path');
+module.exports = {
+  devServer: { <span>//开发服务器的配置</span>
+    port: 3000, <span>//修改端口号</span>
+    progress: true, <span>//内存打包出现进度条</span>
+    contentBase: './bulid', <span>//以build 目录作为静态服务</span>
+    <span>open: true, //自动打开浏览器</span>
+    compress: true,<span>//启用gzip压缩</span>
+  },
+}
+
+<span>//运行时   npm webpack-dev-server  </span>
+<span>//webpack-dev-server 命令也可以在packge.json 文件里面进行配置 </span>
+<code>packge.json</code>
+{
+  "name": "webpack-dev-1",
+  ...
+    <u>  "scripts": {
+    "build": "webpack --config wepack.config.min.js",
+    "dev": "webpack-dev-server"
+   },</u>
+  "devDependencies": {
+    ....
+  }
+}
+<span>//运行时   npm dev  即可 </span>
+						</pre>
+					</div>
+					<h2 id="proxy" class="content_right_h2">跨域问题</h2>
+					<div class="code">
+						<pre>
+<span>//安装webpack内置的开发服务   运行npm install webpack-dev-server --save-dev</span>
+npm install webpack-dev-server --save-dev
+<code>webpack.config.js</code>
+const path = require('path');
+module.exports = {
+  devServer: { <span>//开发服务器的配置</span>
+    ...
+    proxy:{<span>//解决跨域问题</span>
+    	<!--<span>//配置一个代理，相当于访问以‘api’开头的，都去3000端口</span>
+    	'/api': 'http://localhost:3000',-->
+    	'/api': {
+    		target: 'http://localhost:3000',
+    		pathRewrite: {'/api': ''}
+    	}
+    }
+  },
+}
+						</pre>
+					</div>
 					<h2 id="Loader" class="content_right_h2">loader
 						<p>loader 让 webpack 能够去处理那些非 JavaScript 文件（webpack 自身只理解 JavaScript）。loader 可以将所有类型的文件转换为 webpack 能够处理的有效模块，然后你就可以利用 webpack 的打包能力，对它们进行处理。</p>
 						<p>本质上，webpack loader 将所有类型的文件，转换为应用程序的依赖图（和最终的 bundle）可以直接引用的模块。</p>
@@ -97,12 +189,54 @@ module.exports = {
 						<p><span>2. <i>use</i> 属性，表示进行转换时，应该使用哪个 loader。</span></p>
 					</h2>
 					<div class="code">
+						<pre>
+<span>//先安装 less-loader 和 style-loader</span>
+npm install css-loader style-loader --save-dev
+						</pre>
 						<code>webpack.config.js</code>
 						<pre>
-module: {
-  rules: [
-    { test: /\.txt$/, use: 'raw-loader' }
-  ]
+module.exports = {
+  module: {<span>//模块</span>
+    noParse: /jquery/,<span>//不想解析jquery，因为jquery没有依赖</span>
+    rules: [<span>//规则  css-loader 解析@import这种语法</span>
+      <span>//style-loader 把css插入到 head 标签中</span>
+      <span>//loader 用法 字符串 只用一个loader</span>
+      <span>//多个loader需要用数组 []</span>
+      <span>//也可用对象形式  用对象的好处是可以传参</span>
+      <span>//loader 的执行顺序是从<em>右(下)</em>向<em>左(上)</em></span>
+      <span>//其他css一样</span>
+      <span>//sass node-sass sass-loader</span>
+      <span>//stylus stylus-loader</span>
+      { test: /\.txt$/, use: 'raw-loader' },
+      { test: /\.css$/, use:['style-loader', 'css-loader']},
+      { test: /\.less$/, 
+        use:[<span>//对象形式</span>
+      	  {
+      	    loader:'style-loader',
+      	    options:{<span>//传参</span>
+      	      <span>//希望把生成的样式插入到head的顶部，这样就不会覆盖自己写的默认样式</span>
+      	      insertAt: 'top',
+      	    }
+      	  }, 
+      	  'css-loader',
+      	  'less-loader' <span>//先安装 npm install less less-lodaer --save-dev</span>
+      	]
+      },
+      {text: /\.js$/,
+      	exclude: /node_modules/,<span>//排除node_modules目录下的.js</span>
+      	include:path.resolve('src'),<span>//只找src目录下的.js</span>
+        use: {
+        	loader: 'babel-loader',
+        	options: {
+        		presets: [
+        		  '@babel/preset-env',
+        		  '@babel/preset-react'<span>//解析react语法</span>
+        		]
+        	}
+        }
+      }
+    ]
+  }
 }
 						</pre>
 					</div>
@@ -114,30 +248,204 @@ module: {
 					<div class="warning">
 						在 webpack 配置中定义 loader 时，要定义在 module.rules 中，而不是 rules。
 					</div>
-					<h2 id="Plugin" class="content_right_h2">插件
-						<p>想要使用一个插件，你只需要<i>require()</i>  它，然后把它添加到 <i>plugins</i> 数组中。多数插件可以通过选项(option)自定义。你也可以在一个配置文件中因为不同目的而多次使用同一个插件，这时需要通过使用<i> new</i> 操作符来创建它的一个实例。</p>
+					<h2 id="source_map" class="content_right_h2">源码映射source-map
+						<p>解决开发代码与实际运行代码不一致时帮助我们debug到原始开发代码的技术，简单来说可以用来调试功能</p>
 					</h2>
 					<div class="code">
 						<code>webpack.config.js</code>
 						<pre>
-const HtmlWebpackPlugin = require('html-webpack-plugin'); <span>// 通过 npm 安装</span>
-const webpack = require('webpack'); <span>// 用于访问内置插件</span>
-
-const config = {
-  module: {
-    rules: [
-      { test: /\.txt$/, use: 'raw-loader' }
-    ]
-  },
-  plugins: [
-    new HtmlWebpackPlugin({template: './src/index.html'})
-  ]
-};
-
-module.exports = config;
+module.exports = {
+  <span>//1) 源码映射，会产生一个单独的文件，出错了，会标识当前报错的行和列</span>
+  devtool: 'source-map',<span>//增加映射文件，可以帮我们调试源代码</span>
+  <span>//2)源码映射，<em>不</em>会产生一个单独的文件，出错了，会标识当前报错的行和列</span>
+  devtool: 'eval-source-map',<span>//增加映射文件，可以帮我们调试源代码</span>
+  <span>//3)源码映射，会产生一个单独的文件，出错了，<em>不</em>会标识当前报错的行和列</span>
+  devtool: 'cheap-module-source-map',<span>//产生后可以保留起来</span>
+  <span>//4)源码映射，<em>不</em>会产生文件，继承在打包后的文件，<em>不</em>会标识当前报错的行和列</span>
+  devtool: 'cheap-module-eval-source-map',
+  plugins:[...]
+}
 						</pre>
 					</div>
-					
+					<h2 id="watch" class="content_right_h2">监控watch
+					<p>自动打包，每当监控到代码改动时，实时重新执行打包</p>
+					</h2>
+					<div class="code">
+						<code>webpack.config.js</code>
+						<pre>
+module.exports = {
+  watch: true,
+  watchOptions: {<span>//监控的选项</span>
+    poll: 1000, <span>//每秒监控1000次</span>
+    aggregateTimeout: 500,<span>防抖 ，停止输入后的500毫秒打包</span>
+    ignored: /node_modules/, <span>//不需要监控这个文件</span>
+  }
+}
+					</div>
+					<h2 id="resolve" class="content_right_h2">解析
+						<p>配置模块如何解析。比如： <i>import _ from 'lodash'</i> ,其实是加载解析了lodash.js文件。此配置就是设置加载和解析的方式。</p>
+					</h2>
+					<div class="code">
+						<code>webpack.config.js</code>
+						<pre>
+module.exports = {
+  resolve: {
+    <span>//只在node_modules目录里查找,可多写</span>
+    modules: [path.resolve('node_modules'),path.resolve('dist')],
+    alias:{<span>//别名</span>
+    	bootstrap: 'bootstrap/dist/css/bootstrap.css'
+    },
+    mainFields: ['style','main'],<span>//主入口，先找style，，找不到再去mian里面找</span>
+    mainFiles: [],<span>//入口文件的名字 默认找index.js</span>
+    extensions:['.js','.css','.json'],<span>//扩展名先找.js，没有再找.css，没有再找.json</span>
+  }
+}
+						</pre>
+					</div>
+					<h2 id="Plugin" class="content_right_h2">插件
+						<p>想要使用一个插件，你只需要<i>require()</i>  它，然后把它添加到 <i>plugins</i> 数组中。多数插件可以通过选项(option)自定义。你也可以在一个配置文件中因为不同目的而多次使用同一个插件，这时需要通过使用<i> new</i> 操作符来创建它的一个实例。</p>
+					</h2>
+					<p class="p_text">【插件】自动打包生成</p>
+					<div class="code">
+						<code>webpack.config.js</code>
+						<pre>
+const path = require('path');
+<span>//通过 npm 安装  npm install html-webpack-plugin --save-dev</span>
+<u>const HtmlWebpackPlugin = require('html-webpack-plugin'); </u>
+module.exports = {
+  output: {
+    filename:'bundle.[hash].js',<span>//给文件加哈希 防止缓存</span>
+    filename:'bundle.[hash:8].js',<span>//给文件加8位哈希 </span>
+    path: path.resolve(__dirname, "dist"),
+  }
+  plugins:[
+    new HtmlWebpackPlugin({
+    	template: './src/index.html', <span>//以谁作为模板</span>
+    	filename: 'index.html', <span>//打包出来的文件名称</span>
+    	minify:{ <span>//压缩</span>
+    	  removeAttributeQuotes: true,<span>//删除html里的双引号</span>
+    	  collapseWhitespace: true,<span>//压缩为一行</span>
+    	},
+    	hash: true,<span>//添加哈希戳</span>
+    })
+  ]
+}
+						</pre>
+					</div>
+					<p class="air_10"></p>
+					<p class="p_text">【插件】多页面自动打包生成</p>
+					<div class="code">
+						<code>webpack.config.js</code>
+						<pre>
+const path = require('path');
+<span>//通过 npm 安装  npm install html-webpack-plugin --save-dev</span>
+<u>const HtmlWebpackPlugin = require('html-webpack-plugin'); </u>
+module.exports = {
+  entry: {
+    home: "./src/index.js",
+    other: "./src/other.js"
+  },
+  output: {
+    filename:'[name].js',<span>//[name] 相当于home 和 other</span>
+    path: path.resolve(__dirname, "dist")
+  }
+  plugins:[
+    new HtmlWebpackPlugin({
+    	template: './src/index.html', <span>//以谁作为模板</span>
+    	filename: 'home.html', <span>//打包出来的文件名称</span>
+    	chunks: ['home'],<span>//表示home.html页面只引入home.js</span>
+    	minify:{ <span>//压缩</span>
+    	  removeAttributeQuotes: true,<span>//删除html里的双引号</span>
+    	  collapseWhitespace: true,<span>//压缩为一行</span>
+    	}
+    }),
+    new HtmlWebpackPlugin({
+    	template: './src/index.html', <span>//以谁作为模板</span>
+    	filename: 'other.html', <span>//打包出来的文件名称</span>
+    	chunks: ['other','home'],<span>//表示home.html页面引入other.js和home.js</span>
+    	minify:{ <span>//压缩</span>
+    	  removeAttributeQuotes: true,<span>//删除html里的双引号</span>
+    	  collapseWhitespace: true,<span>//压缩为一行</span>
+    	}
+    })
+  ]
+}
+						</pre>
+					</div>
+					<p class="air_10"></p>
+					<p class="p_text">【插件】每次清空打包目录</p>
+					<div class="code">
+						<code>webpack.config.js</code>
+						<pre>
+<span>//先安装 npm install clean-webpack-plugin --save-dev</span>
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+module.exports = {
+  ..
+  plugins: [
+    ...
+    new CleanWebpackPlugin('/dist') <span>//需要清空的目录文件</span>	
+  ]
+}
+						</pre>
+					</div>
+					<p class="air_10"></p>
+					<p class="p_text">【插件】复制一些文件到目标目录打包</p>
+					<div class="code">
+						<code>webpack.config.js</code>
+						<pre>
+<span>//先安装 npm install copy-webpack-plugin --save-dev</span>
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+module.exports = {
+  ..
+  plugins: [
+    ...
+    new CopyWebpackPlugin([
+    	{from: '/doc',to: './dist'},<span>//从文件doc复制到dist文件夹</span>
+    ]) 
+  ]
+}
+						</pre>
+					</div>
+					<p class="air_10"></p>
+					<p class="p_text">【插件】添加版权</p>
+					<div class="code">
+						<code>webpack.config.js</code>
+						<pre>
+<span>//webpack内置，不用安装</span>
+module.exports = {
+  ..
+  plugins: [
+    ...
+    new webpack.BannerPlugin('这里写版权信息') 
+  ]
+}
+						</pre>
+					</div>
+					<h2 id="webpack_other" class="content_right_h2">其他
+						<p>自定义 <i>webpack.config.js</i>文件</p>
+					</h2>
+					<div class="code">
+						<pre>
+<span>//方法1  --在运行时  指定自定义的文件名称</span>
+npx webpack --config wepack.config.min.js  <span>//--config  后面跟自定义的文件名称</span>
+
+<span>//方法2   --在packge.json 文件里面进行配置</span>
+<code>packge.json</code>
+{
+  "name": "webpack-dev-1",
+  ...
+    <u>  "scripts": {
+    "build": "webpack --config wepack.config.min.js"
+   },</u>
+  "devDependencies": {
+    ....
+  }
+}
+<span>//build  是自定义的命令</span>
+<span>//然后运行  npm run build</span>
+						</pre>
+						
+					</div>
 				</div>
 				
 			</div>
