@@ -68,3 +68,21 @@ code:before{content: '文件：';color: #b4e22d;}
 pre{line-height: 20px;text-align: left;color: #a5cee1;font-family: Consolas, Monaco, 'Andale Mono', monospace;direction: ltr;}
 pre span{color: #7b7b7b ;}
 .warning{background-color: #fbedb7;color: #8c8466;line-height: 20px;padding: 20px;margin-top: 20px;}
+/*new strat*/
+.indicator {
+    position: absolute;
+    top: 0; right: 0; left: 0; bottom: 0;
+    background: linear-gradient(to right top, #49a2ff 50%, transparent 50%) no-repeat;
+    background-size: 100% calc(100% - 100vh);
+    z-index: 1;
+    pointer-events: none;
+    mix-blend-mode: darken;
+}
+.indicator::after {
+    content: '';
+    position: fixed;
+    top: 3px; bottom: 0; right: 0; left: 0;
+    background: #fff;
+    z-index: 1;
+}
+/*new end*/
