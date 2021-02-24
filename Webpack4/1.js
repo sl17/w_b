@@ -1,28 +1,50 @@
+//NodeJs的path模块自带，resolve用来拼接绝对路径的方法
 const { resolve } = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const { use } = require("chai");
 module.exports = {
+  //入口起点
   entry: './src/js/index.js',
+  //输出
   output: {
+    //输出的文件名
     filename: 'js/build.js',
-    path: resolve(__dirname, 'build')
+    /*
+      resolve用来拼接绝对路径的方法,Node自带需要引入
+      __dirname NodeJs的变量，代表当前文件的目录绝对路径
+    */
+    path: resolve(__dirname, "build"),
+    publicPath:'./'
   },
+  //loader的配置
+  /*
+    解析css需要下载style-loader和css-loader 运行 npm i css-loader style-loader -D
+    解析less需要下载less和less-loader 运行 npm i less less-loader -D
+    sass node-sass sass-loader
+    stylus stylus-loader
+  */
   module: {
     rules: [
+      //处理css
       {
-        test: /\.css/,
+        //test 匹配哪些文件
+        test: /\.css$/,
+        //use 使用哪些loader进行处理
         use: [
-          //创建style标签，将样式放入
-          // 'style-loader',
+          //use执行顺序 从右到左 or 从下到上 依次执行
+          //创建style标签，将js中的css样式资源插入进行，添加到head中生效
+          'style-loader',
+
           /*
           MiniCssExtractPlugin.loader 取代style-loader，
           作用：提取js中的css变成单独文件
           需要下载 mini-css-extract-plugin插件 运行 npm i mini-css-extract-plugin -D
           */
           MiniCssExtractPlugin.loader,
-          'css-losder',
+          //将css文件变成commonjs模块加载到js中，里面内容是样式字符串
+          'css-loader',
           /*
           css做兼容处理：postcss 运行 npm i postcss-loader postcss-preset-env -D
           postcss-preset-env帮助postcss找到package.json中的browserslist里面的配置，通过配置加载指定的css兼容性
@@ -59,6 +81,15 @@ module.exports = {
             }
           }
         ]
+      },
+      //处理less
+      { 
+        test: /\.less$/, 
+        use:[
+          'style-loader',
+      	  'css-loader',
+      	  'less-loader' //先安装 npm i less less-lodaer -D
+      	]
       },
       /*
         语法检查：eslint-loader eslint
@@ -129,27 +160,98 @@ module.exports = {
            ]
          ]
         }
+      },
+      /*
+        处理图片资源
+        默认处理不了html里的img
+      */
+      {
+        test: /\.(jpg|png|gif)$/,
+        //使用url-loader 下载 url-loader 和 file-loader 运行 npm i url-loader file-loader -D
+        loader: 'url-loader',//单个可以简写，不用写use
+        //配置
+        options: {
+          //图片大小小于8kb，就会被base64处理
+          limit: 8 * 1024,
+          /*
+            旧版本问题：url-loader默认使用ES6模块解析，而html-loader引入图片是commonjs
+              解析时会出问题：[object Module]
+            解决：关闭url-loader的ES6模块化，使用commonjs解析
+          */
+          esModule: false,
+          /*
+            给图片重命名
+            [hash:10]取图片hash的前10位
+            [ext]取原来文件的扩展名
+          */
+          name: '[hash:10].[ext]',
+          //打包后要放置的文件夹
+          outputPath: 'images'
+        }
+      },
+      //本处理html里的img的图片资源
+      {
+        test: /\.html$/,
+        //处理html文件的img图片（负责引入img，从而能被url-loader处理）
+        //下载 html-loader 运行 npm i html-loader -D
+        // loader: 'html-loader',
+        loader: 'html-withimg-loader',//html-withimg-loader
+      },
+      //打包字体资源
+      {
+        /*
+          exclude 排除其他资源 css|js|less
+          exclude: /\.(css|js|less)/,
+        */
+        test:/\.(eot|svg|ttf|woff|otf)/,
+        loader: 'file-loader',
       }
     ]
   },
+  //plugins的配置
+  /*
+    打包html文件的插件 
+      1.先下载运行 npm i html-webpack-plugin -D
+      2.引入 const HtmlWebpackPlugin = require('html-webpack-plugin');
+      3.写入到plugins里面 new HtmlWebpackPlugin()
+  */ 
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-      //压缩html
-      minify: {
-        //移除空格
-        collapseWhitespace: true,
-        //移除注释
-        removeComments: true
+    /*
+      new HtmlWebpackPlugin()
+      功能：默认创建一个空的html文件，自动引入打包的资源（js&css）
+      需求：需要有结构的html文件
+    */
+    new HtmlWebpackPlugin(
+      {
+        //复制./src/index.html 文件dom结构
+        template: './src/index.html'
       }
-    }),
+    ),
     new MiniCssExtractPlugin({
       //生成的文件名叫build.css，放在build/css下
       filename: 'css/build.css'
     }),
     // optimize-css-assets-webpack-plugin 压缩css的插件 运行 npm i optimize-css-assets-webpack-plugin -D
     //压缩css
-    new OptimizeCssAssetsWebpackPlugin()
+    // new OptimizeCssAssetsWebpackPlugin()//2021-02-24 23:02:30 安装不了插件
   ],
-  mode: 'development'
+  // 模式
+  mode: 'development',//开发环境
+  // mode: 'production',//生产环境
+
+  /*
+    开发服务器 devServer：用来自动化（自动编译，自动打开浏览器，自动刷新）
+    特点：只会在内存中编译打包，不会有任何输出
+    npx 本地启动
+    启动devServer 指令：npx webpack-dev-server or npx webpack serve需要下载 npm i webpack-dev-server -D
+  */
+  devServer: {
+    contentBase: resolve(__dirname, 'build'),
+    //启动gzip压缩
+    compress: true,
+    //端口号
+    port: 3000,
+    //自动打开浏览器
+    open: true
+  }
 }
