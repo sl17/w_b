@@ -246,6 +246,7 @@ module.exports = {
     启动devServer 指令：npx webpack-dev-server or npx webpack serve需要下载 npm i webpack-dev-server -D
   */
   devServer: {
+    //要运行项目的目录
     contentBase: resolve(__dirname, 'build'),
     //启动gzip压缩
     compress: true,
