@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    #app {
+      padding-left: 20px;
+    }
+
+    .selectBox {
+      margin-bottom: 20px;
+    }
+
+    .selectBox h4 {
+      line-height: 30px;
+      font-size: 16px;
+    }
+
+    .selectBox p {
+      cursor: default;
+      font-size: 16px;
+      margin-left: 12px;
+      line-height: 24px;
+    }
+
+    .selectBox span.suc {
+      color: #23a02d;
+      font-weight: bold;
+      cursor: pointer;
+      position: relative;
+    }
+    .selectBox span.err {
+      color: #f70101;
+      font-weight: bold;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .selectBox span.suc::after {
+      content: '√';
+      color: #23a02d;
+      font-weight: bold;
+      position: absolute;
+      top: 3px;
+      left: -20px;
+      width: 14px;
+      font-size: 12px;
+      height: 14px;
+      line-height: 15px;
+      text-align: center;
+      border: 1px solid #23a02d;
+      border-radius: 10px;
+    }
+    .selectBox span.err::after {
+      content: '×';
+      color: #f70101;
+      font-weight: bold;
+      position: absolute;
+      top: 3px;
+      left: -20px;
+      width: 14px;
+      font-size: 12px;
+      height: 14px;
+      line-height: 12px;
+      text-align: center;
+      border: 1px solid #f70101;
+      border-radius: 10px;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <select-itme v-for="(item,index) in selectList" :key='index' v-bind:obj='item'></select-itme>
+  </div>
+  <script>
+    Vue.component('select-itme', {
+      props: ['obj'],
+      data: function () {
+        return {
+          seleckd: null,
+          checked: null
+        }
+      },
+      template: `
+          <div class='selectBox'>
+            <h4>{{obj.title}}</h4> 
+            <p v-for='(item,index) in obj.answers' :key='index'>
+              <span :class="seleckd===index?item.checked?'suc':'err':''" @click="selAnswers(index,item.checked)">{{item.txt}}</span>
+            </p>
+          </div>
+          `,
+      methods: {
+        selAnswers(i,s) {
+          this.seleckd = i;
+          this.checked = s
+        }
+      },
+    })
+    var app = new Vue({
+      el: '#app',
+      data: {
+        selectList: [
+          {
+            title: '（）承担承运人责任。',
+            answers: [
+              { txt: 'A、网络预约出租汽车平台公司', checked: true },
+              { txt: 'B、车辆所有人', checked: false },
+              { txt: 'C、驾驶员', checked: false },
+              { txt: 'D、以上都可以', checked: false },
+            ]
+          },
+          {
+            title: '（）负责本市行政区域内网络预约出租汽车管理工作。',
+            answers: [
+              { txt: 'A、省交通运输行政主管部门', checked: true },
+              { txt: 'B、市交通运输行政主管部门', checked: false },
+              { txt: 'C、省道路运输管理机构', checked: false },
+              { txt: 'D、市道路运输管理机构', checked: false },
+            ]
+          },
+          {
+            title: '（）负责公布本市网络预约出租汽车驾驶员从业资格区域科目考试大纲，组织实施考试。',
+            answers: [
+              { txt: 'A、市道路运输管理机构', checked: true },
+              { txt: 'B、省道路运输管理机构', checked: false },
+              { txt: 'C、交通运输部', checked: false },
+              { txt: 'D、社会学校', checked: false },
+            ]
+          },
+          {
+            title: '（）负责具体实施网络预约出租汽车管理，统一受理网络预约出 租汽车平台公司、车辆和驾驶员的资质审查与证件核发工作。',
+            answers: [
+              { txt: 'A、交通部', checked: true },
+              { txt: 'B、省道路运输管理机构', checked: false },
+              { txt: 'C、市道路运输管理机构', checked: false },
+              { txt: 'D、县道路运输管理机构', checked: false },
+            ]
+          },
+          {
+            title: '（）应当定期组织开展网络预约出租汽车服务质量测评。',
+            answers: [
+              { txt: 'A、省道路运输管理机构', checked: true },
+              { txt: 'B、市道路运输管理机构', checked: false },
+              { txt: 'C、省出租车协会', checked: false },
+              { txt: 'D、市出租车协会', checked: false },
+            ]
+          },
+          {
+            title: '（）周岁以下或者身高低于（）米的儿童不得乘坐前排座椅。',
+            answers: [
+              { txt: 'A、12，1.4', checked: true },
+              { txt: 'B、10，1.2', checked: false },
+              { txt: 'C、12，1.2', checked: false },
+              { txt: 'D、10，1.4', checked: false },
+            ]
+          },
+          {
+            title: '（）周岁以下或者身高低于（）米的儿童乘坐小型轿车时应当配备并正确使用儿童安全座椅，但是客运出租汽车除外。',
+            answers: [
+              { txt: 'A、3，1', checked: true },
+              { txt: 'B、4，1.2', checked: false },
+              { txt: 'C、4，1', checked: false },
+              { txt: 'D、3，1.2', checked: false },
+            ]
+          },
+          {
+            title: '《杭州市安全生产监督管理条例》规定，运输单位未按规定组织应急救援演练的，责令限期改正；逾期不改正的，可处以（）以上（）以下罚款。',
+            answers: [
+              { txt: 'A、1000，5000', checked: true },
+              { txt: 'B、3000，10000', checked: false },
+              { txt: 'C、1000，10000', checked: false },
+              { txt: 'D、5000，20000', checked: false },
+            ]
+          },
+          {
+            title: '《杭州市安全生产监督管理条例》规定，运输单位应当建立健全应急救援组织，落实应急救援装备和器材，并且每年至少（）次应急救援演练。',
+            answers: [
+              { txt: 'A、1', checked: true },
+              { txt: 'B、2', checked: false },
+              { txt: 'C、3', checked: false },
+              { txt: 'D、4', checked: false },
+            ]
+          },
+          {
+            title: '《杭州市客运出租汽车驾驶员职业道德规范》规定，一般在摄氏（）度以下和摄氏（）度以上使用空调。',
+            answers: [
+              { txt: 'A、12，28', checked: true },
+              { txt: 'B、10，30', checked: false },
+              { txt: 'C、10，28', checked: false },
+              { txt: 'D、12，30', checked: false },
+            ]
+          },
+          {
+            title: '《网络预约出租汽车运输证》有效期与车辆使用年限挂钩，最长不超过（）年。',
+            answers: [
+              { txt: 'A、5', checked: true },
+              { txt: 'B、6', checked: false },
+              { txt: 'C、7', checked: false },
+              { txt: 'D、8', checked: false },
+            ]
+          },
+          {
+            title: '导致（）人以下（含）重伤的一般事故，区、县（市）人民政府可以委托乡（镇）人民政府、街道办事处进行调查。',
+            answers: [
+              { txt: 'A、一', checked: true },
+              { txt: 'B、二', checked: false },
+              { txt: 'C、三', checked: false },
+              { txt: 'D、四', checked: false },
+            ]
+          },
+          {
+            title: '各有关部门应当按照各自职责建立网络预约出租汽车平台公司和驾驶员信用记录，并纳入（）和（）信用信息共享平台。',
+            answers: [
+              { txt: 'A、全国，本市', checked: true },
+              { txt: 'B、全国，本省', checked: false },
+              { txt: 'C、全省，本市', checked: false },
+              { txt: 'D、本市，本市', checked: false },
+            ]
+          },
+          {
+            title: '根据《杭州市网络预约出租汽车和私人小客车合乘管理实施细则（试行）》，本市《网络预约出租汽车经营许可证》的有效期暂定为（）年。',
+            answers: [
+              { txt: 'A、1', checked: true },
+              { txt: 'B、2', checked: false },
+              { txt: 'C、3', checked: false },
+              { txt: 'D、4', checked: false },
+            ]
+          },
+          {
+            title: '根据《浙江省信访条例》的相关规定，多人以走访形式共同提出同一信访事项的，应当通过其推选的代表反映。十人以下的，代表人数最多不得超过（）；超过十人的，代表人数最多不得超过（）。',
+            answers: [
+              { txt: 'A、一人，三人', checked: true },
+              { txt: 'B、二人，三人', checked: false },
+              { txt: 'C、三人，五人', checked: false },
+              { txt: 'D、四人，五人', checked: false },
+            ]
+          },
+          {
+            title: '根据《浙江省信访条例》的相关规定，信访人在信访活动中，下列哪个选项不是信访人应当履行的义务（）。',
+            answers: [
+              { txt: 'A、依照法定的方式和程序提出信访事项', checked: true },
+              { txt: 'B、提出的信访事项客观真实，对提供材料的真实性负责，不得捏造、歪曲事实，不得诽谤、诬告陷害他人', checked: false },
+              { txt: 'C、由国家机关对信访事项进行调查、核实和处理，信访人可以不予配合', checked: false },
+              { txt: 'D、法律、法规规定的其他义务', checked: false },
+            ]
+          },
+          {
+            title: '关于安全生产教育培训，下列说法错误的是（）',
+            answers: [
+              { txt: 'A、未经安全生产教育和培训合格的从业人员，不得上岗作业', checked: true },
+              { txt: 'B、兼职安全管理人员可不进行安全生产教育和培训', checked: false },
+              { txt: 'C、安全生产教育培训记录应当由从业人员本人签名', checked: false },
+              { txt: 'D、生产经营单位应当建立和妥善保管从业人员安全生产教育培训档案', checked: false },
+            ]
+          },
+          {
+            title: '关于错峰限行，下列说法错误的是（）。',
+            answers: [
+              { txt: 'A、因法定节假日而致双休日变更为工作日的，按对应工作日尾号实施“错峰限行”', checked: true },
+              { txt: 'B、城市快运车辆不受错峰限行限制', checked: false },
+              { txt: 'C、星期一禁止在高峰时段通行的机动车尾号为1和9', checked: false },
+              { txt: 'D、西湖景区只实行单双号，不实行错峰限行。', checked: false },
+            ]
+          },
+          {
+            title: '关于杭州市网络预约出租汽车经营区域，下列说法错误的是（）。',
+            answers: [
+              { txt: 'A、可在杭州上城区接客到滨江区', checked: true },
+              { txt: 'B、可在杭州萧山区接客到淳安县', checked: false },
+              { txt: 'C、可在上海市接客到杭州下城区', checked: false },
+              { txt: 'D、可在宁波市接客到金华市', checked: false },
+            ]
+          },
+          {
+            title: '关于申请网络预约出租汽车运输证，下列说法错误的是（）。',
+            answers: [
+              { txt: 'A、车辆使用年限不超过5年', checked: true },
+              { txt: 'B、安装顶灯', checked: false },
+              { txt: 'C、安装应急报警装省', checked: false },
+              { txt: 'D、安装具有行驶记录功能的车辆卫星定位装置', checked: false },
+            ]
+          },
+          {
+            title: '关于私人小客车合乘，下列说法错误的是（）。',
+            answers: [
+              { txt: 'A、私人小客车合乘应当由乘客预先发布驾车出行信息', checked: true },
+              { txt: 'B、私人小客车合乘可采用免费互助的形式', checked: false },
+              { txt: 'C、每辆私人小客车或每个驾驶员累计每日提供合乘服务不得超过4次', checked: false },
+              { txt: 'D、私人小客车合乘可采用仅分摊部分出行成本的形式', checked: false },
+            ]
+          },
+          {
+            title: '关于网络预约出租汽车车辆标准，下列说法错误的是（）。',
+            answers: [
+              { txt: 'A、具有浙A牌照，9座及以下乘用车', checked: true },
+              { txt: 'B、对于非新能源车，轴距达到2700毫米以上或者车辆购置的计税价格在12万元以上 ', checked: false },
+              { txt: 'C、对于新能源车，轴距达到2600毫米以上或者综合工况续航里程达到250千米以上', checked: false },
+              { txt: 'D、车辆技术性能符合环保和运营安全相关标准要求', checked: false },
+            ]
+          },
+          {
+            title: '关于网络预约出租汽车平台公司，下列说法错误的是（）。',
+            answers: [
+              { txt: 'A、网络预约出租汽车平台公司应当保证线上提供服务的车辆与线下实际提供服务的车辆一致，并将车辆相关信息向市道路运输管理机构报备', checked: true },
+              { txt: 'B、网络预约出租汽车平台公司应当保证线上提供服务的驾驶员与线下实际提供服务的驾驶员一致，并将驾驶员相关信息向市道路运输管理机构报备 ', checked: false },
+              { txt: 'C、网络预约出租汽车平台公司应当公布确定符合国家有关规定的计程计价方式，合理确定网络预约出租汽车运价，实行明码标价', checked: false },
+              { txt: 'D、网络预约出租汽车平台公司不需要向乘客提供相应的出租汽车发票', checked: false },
+            ]
+          },
+          {
+            title: '关于有关年限的说法，下列错误的是（）。',
+            answers: [
+              { txt: 'A、《网络预约出租汽车运输证）有效期与车辆使用年限挂钩，最长不超过8年保证线上提供服务的车辆与线下实际提供服务的车辆一致，并将车辆相关信息向市道路运输管理机构报备', checked: true },
+              { txt: 'B、申请网络预约出租汽车的车辆使用年限不超过8年', checked: false },
+              { txt: 'C、申请网络预约驾驶员须取得相应准驾车型机动车驾驶证并具有3年以上驾驶经历', checked: false },
+              { txt: 'D、《网络预约出租汽车经营许可证》的有效期为1年', checked: false },
+            ]
+          },
+          {
+            title: '国家机关办理信访事项，对当场能够答复的事项，应当立即办理；对需要调查、取证、协调的事项，一般应当自受理之日起（）日内办结；对情况复杂或者取证困难、依据不明确的事项，经本国家机关负责人批准，可以适当延长办理期限，但延长期限不得超过（）日。',
+            answers: [
+              { txt: 'A、十五，三十', checked: true },
+              { txt: 'B、二十，四十', checked: false },
+              { txt: 'C、三十，六十', checked: false },
+              { txt: 'D、六十，九十', checked: false },
+            ]
+          },
+          {
+            title: '国家机关收到信访人提出的信访事项，应当登记、录入网络信访平台，能够当场答复的，应当当场答复：不能当场答复的，在（）个工作日内按规定作出处理。',
+            answers: [
+              { txt: 'A、三', checked: true },
+              { txt: 'B、五', checked: false },
+              { txt: 'C、七', checked: false },
+              { txt: 'D、九', checked: false },
+            ]
+          },
+          {
+            title: '杭州市网络预约出租汽车数量实行（）调节，网络预约出租汽车运价实行（）调节价。',
+            answers: [
+              { txt: 'A、总量，市场', checked: true },
+              { txt: 'B、总量，政府', checked: false },
+              { txt: 'C、市场，政府', checked: false },
+              { txt: 'D、市场，市场', checked: false },
+            ]
+          },
+          {
+            title: '杭州市网络预约出租汽车治安主管部门是（）。',
+            answers: [
+              { txt: 'A、杭州市公安局交通警察支队', checked: true },
+              { txt: 'B、杭州市公安局交通治安分局', checked: false },
+              { txt: 'C、网约车驾驶员居住地公安机关', checked: false },
+              { txt: 'D、杭州市道路运输管理局', checked: false },
+            ]
+          },
+          {
+            title: '驾驶员和信息服务平台收取的每公里费用总额，不得超过巡游出租汽车每公里里程运价的（）。',
+            answers: [
+              { txt: 'A、四分之一', checked: true },
+              { txt: 'B、三分之一', checked: false },
+              { txt: 'C、二分之一', checked: false },
+              { txt: 'D、三分之二', checked: false },
+            ]
+          },
+          {
+            title: '客运经营者调整营运站点的，应当在向有关行政主管部门办妥相关手续之日起（）日内，向备案公安机关办理变更备案。',
+            answers: [
+              { txt: 'A、3', checked: true },
+              { txt: 'B、5', checked: false },
+              { txt: 'C、7', checked: false },
+              { txt: 'D、9', checked: false },
+            ]
+          },
+          {
+            title: '客运经营者违反《杭州市客运汽车交通治安管理办法》第十条第（九）项规定，未按照客运汽车治安安全检查规则组织开展治安安全检查的，由公安机关责令改正，并处0元以上（）元以下罚款。',
+            answers: [
+              { txt: 'A、5000，10000', checked: true },
+              { txt: 'B、3000，10000', checked: false },
+              { txt: 'C、4000，20000', checked: false },
+              { txt: 'D、2000，20000', checked: false },
+            ]
+          },
+          {
+            title: '客运汽车交通治安管理实行治安备案制度，客运经营者应当在取得经营资格之日起（）日内，持相关材料向所在地的公安机关备案。',
+            answers: [
+              { txt: 'A、3', checked: true },
+              { txt: 'B、5', checked: false },
+              { txt: 'C、7', checked: false },
+              { txt: 'D、9', checked: false },
+            ]
+          },
+          {
+            title: '离岗（）个月以上的从业人员上岗前应当重新进行安全生产教育和培训。',
+            answers: [
+              { txt: 'A、3', checked: true },
+              { txt: 'B、6', checked: false },
+              { txt: 'C、9', checked: false },
+              { txt: 'D、12', checked: false },
+            ]
+          },
+          {
+            title: '连续（）年考核等级在（）以上的巡游出租汽车驾驶员，可以申请换发《网络预约出租汽车驾驶员证》。',
+            answers: [
+              { txt: 'A、2，AA', checked: true },
+              { txt: 'B、2，A', checked: false },
+              { txt: 'C、3，AA', checked: false },
+              { txt: 'D、3，A', checked: false },
+            ]
+          },
+          {
+            title: '每辆私人小客车或每个驾驶员累计每日提供合乘服务超过（）次的，属于网络预约出租汽车经营。',
+            answers: [
+              { txt: 'A、3', checked: true },
+              { txt: 'B、4', checked: false },
+              { txt: 'C、5', checked: false },
+              { txt: 'D、6', checked: false },
+            ]
+          },
+          {
+            title: '申请《网络预约出租汽车运输证》的车辆，若为新能源汽车，则其综合工况续航里程达到（）千米以上。',
+            answers: [
+              { txt: 'A、200', checked: true },
+              { txt: 'B、250', checked: false },
+              { txt: 'C、300', checked: false },
+              { txt: 'D、350', checked: false },
+            ]
+          },
+          {
+            title: '申请办理网络预约出租汽车经营许可证的«须提交企业法人注册地（）交通运输主管部门会同相关部门对其具备有关线上服务能力、符合相关要求的审核认定结果。',
+            answers: [
+              { txt: 'A、省级', checked: true },
+              { txt: 'B、市级', checked: false },
+              { txt: 'C、县级', checked: false },
+              { txt: 'D、国家', checked: false },
+            ]
+          },
+          {
+            title: '申请参加网络预约出租汽车驾驶员从业资格考试的，应取得相应准驾车型机动车驾驶证并具有（）年以上驾驶经历。',
+            answers: [
+              { txt: 'A、1', checked: true },
+              { txt: 'B、2', checked: false },
+              { txt: 'C、3', checked: false },
+              { txt: 'D、5', checked: false },
+            ]
+          },
+          {
+            title: '申请参加网络预约出租汽车驾驶员从业资格考试的并且未取得本市户籍的驾驶员，须满足在本市取得浙江省居住证（）个月以上，或在本市取得浙江省临时居住证（）个月以上。',
+            answers: [
+              { txt: 'A、3，6', checked: true },
+              { txt: 'B、6，12', checked: false },
+              { txt: 'C、9，18', checked: false },
+              { txt: 'D、12，18', checked: false },
+            ]
+          },
+          {
+            title: '申请网络预约出租汽车的车辆（）喷涂巡游出租汽车标志标识、（）安装顶灯装置。',
+            answers: [
+              { txt: 'A、应，不应', checked: true },
+              { txt: 'B、应，应', checked: false },
+              { txt: 'C、不应，不应', checked: false },
+              { txt: 'D、不应，应', checked: false },
+            ]
+          },
+          {
+            title: '申请网络预约出租汽车的车辆使用年限不超过（）年。',
+            answers: [
+              { txt: 'A、3', checked: true },
+              { txt: 'B、4', checked: false },
+              { txt: 'C、5', checked: false },
+              { txt: 'D、8', checked: false },
+            ]
+          },
+          {
+            title: '申请网络预约出租汽车的非新能源汽车其轴距须达到（）毫米以上。',
+            answers: [
+              { txt: 'A、2600', checked: true },
+              { txt: 'B、2650', checked: false },
+              { txt: 'C、2700', checked: false },
+              { txt: 'D、2750', checked: false },
+            ]
+          },
+          {
+            title: '申请网络预约出租汽车的新能源汽车其轴距须达到（）毫米以上。',
+            answers: [
+              { txt: 'A、2500', checked: true },
+              { txt: 'B、2600', checked: false },
+              { txt: 'C、2650', checked: false },
+              { txt: 'D、2700', checked: false },
+            ]
+          },
+          {
+            title: '申请网络预约出租汽车驾驶须最近连续（）个记分周期内没有记满12分记录。',
+            answers: [
+              { txt: 'A、1', checked: true },
+              { txt: 'B、2', checked: false },
+              { txt: 'C、3', checked: false },
+              { txt: 'D、4', checked: false },
+            ]
+          },
+          {
+            title: '申请网络预约出租汽车运输证的车辆，其车辆须具有本市号牌，使用性质登记为“预约出租客运”的（）座及以下乘用车（面包车除外）。',
+            answers: [
+              { txt: 'A、12', checked: true },
+              { txt: 'B、11', checked: false },
+              { txt: 'C、9', checked: false },
+              { txt: 'D、7', checked: false },
+            ]
+          },
+          {
+            title: '申请网络预约出租汽车运输证的非新能源汽车·必须满足轴距达到2700毫米以上或车辆购置的计税价格在（）万元以上。',
+            answers: [
+              { txt: 'A、12', checked: true },
+              { txt: 'B、13', checked: false },
+              { txt: 'C、14', checked: false },
+              { txt: 'D、15', checked: false },
+            ]
+          },
+          {
+            title: '生产经营单位建立的重大危险源运行管理档案，纸质文档应当至少保存（）年，视频数据应当至少保存（）天。',
+            answers: [
+              { txt: 'A、一，十三', checked: true },
+              { txt: 'B、二，六十', checked: false },
+              { txt: 'C、三，九十', checked: false },
+              { txt: 'D、四，一百二十', checked: false },
+            ]
+          },
+          {
+            title: '私人小客车合乘信息服务平台收取服务费用的·应当向社会公开收费标准，实行明码标价且由（）投保车上人员责任险',
+            answers: [
+              { txt: 'A、驾驶员', checked: true },
+              { txt: 'B、车主', checked: false },
+              { txt: 'C、私人小客车合乘信息服务平台', checked: false },
+              { txt: 'D、以上都可以', checked: false },
+            ]
+          },
+          {
+            title: '私人小客车合乘信息服务平台应当具有企业法人资格，具备与开展业务相适应的信息数据交互及处理能力，服务器设置在（）',
+            answers: [
+              { txt: 'A、中国内地', checked: true },
+              { txt: 'B、本省', checked: false },
+              { txt: 'C、本市', checked: false },
+              { txt: 'D、任何地方', checked: false },
+            ]
+          },
+          {
+            title: '损坏或者擅自拆除、改装治安监控设施等安全防护设施的，处（）元以上（）元以下罚款。',
+            answers: [
+              { txt: 'A、100，1000', checked: true },
+              { txt: 'B、200，2000', checked: false },
+              { txt: 'C、100，2000', checked: false },
+              { txt: 'D、200，1000', checked: false },
+            ]
+          },
+          {
+            title: '网络预约出租汽车平台公司接到乘客投诉或相矣部门交办的投诉件后，应当在（）日内处理完毕并反馈',
+            answers: [
+              { txt: 'A、3', checked: true },
+              { txt: 'B、5', checked: false },
+              { txt: 'C、7', checked: false },
+              { txt: 'D、15', checked: false },
+            ]
+          },
+          {
+            title: '网络预约出租汽车平台公司应当开展有关法律法规、职业道德、服务规范、（）等方面的岗前培训和日常教育，维护和保障驾驶员合法权益。',
+            answers: [
+              { txt: 'A、安全运营', checked: true },
+              { txt: 'B、投诉处理', checked: false },
+              { txt: 'C、消费者权益', checked: false },
+              { txt: 'D、节能减排', checked: false },
+            ]
+          },
+          {
+            title: '网络预约出租汽车平台公司应当遵守国家网络和信息安全有矣规定，所采集的个人信息和生成的业务数据，应当在中国内地存储和使用，保存期限不少于（）年。',
+            answers: [
+              { txt: 'A、1', checked: true },
+              { txt: 'B、2', checked: false },
+              { txt: 'C、3', checked: false },
+              { txt: 'D、4', checked: false },
+            ]
+          },
+          {
+            title: '网络预约出租汽车使用年限到达()年的退出网约车经营。',
+            answers: [
+              { txt: 'A、3', checked: true },
+              { txt: 'B、5', checked: false },
+              { txt: 'C、6', checked: false },
+              { txt: 'D、8', checked: false },
+            ]
+          },
+          {
+            title: '网络预约出租汽车行驶里程达到（）万千米时强制报废。',
+            answers: [
+              { txt: 'A、50', checked: false },
+              { txt: 'B、60', checked: true },
+              { txt: 'C、70', checked: false },
+              { txt: 'D、80', checked: false },
+            ]
+          },
+          {
+            title: '危险物品的生产、储存、运输单位和存在重大危险源的单位，应当配备不少于（）名的注册安全工程师或者具有相关专业中级以上工程技术职称的专职安全生产管理人员；从业人员超过三百人（含）的应当配备不少于（）名的注册安全工程师或者具有相矢专业中级以上工程技术职称的专职安全生产管理人员。',
+            answers: [
+              { txt: 'A、一，两', checked: false },
+              { txt: 'B、两，三', checked: true },
+              { txt: 'C、三，四', checked: false },
+              { txt: 'D、四，五', checked: false },
+            ]
+          },
+          {
+            title: '违反《杭州市客运汽车交通治安管理办法》第十一条第（四）项规定，安检工作人员对不接受治安安全检查的乘客，不予纠正的，处（）元以上（）元以下罚款。',
+            answers: [
+              { txt: 'A、100，500', checked: false },
+              { txt: 'B、200，1000', checked: true },
+              { txt: 'C、300，1500', checked: false },
+              { txt: 'D、400，2000', checked: false },
+            ]
+          },
+          {
+            title: '违反《杭州市客运汽车交通治安管理办法》第十一条第（一）项规定，拒绝接受治安登记和检查的，处（）元罚款。',
+            answers: [
+              { txt: 'A、100', checked: false },
+              { txt: 'B、200', checked: true },
+              { txt: 'C、300', checked: false },
+              { txt: 'D、400', checked: false },
+            ]
+          },
+          {
+            title: '未按照公安机矣的要求报送涉及治安防范的信息的，由公安机矣责令限期改正，逾期不改的，处（）元以上（）元以下罚款。',
+            answers: [
+              { txt: 'A、1000，5000', checked: false },
+              { txt: 'B、1000，10000', checked: true },
+              { txt: 'C、3000，10000', checked: false },
+              { txt: 'D、10000，50000', checked: false },
+            ]
+          },
+          {
+            title: '未让先被放行的车辆或者行人优先通过的，可对机动车驾驶人处以（）元罚款。',
+            answers: [
+              { txt: 'A、50~200', checked: false },
+              { txt: 'B、50', checked: true },
+              { txt: 'C、200', checked: false },
+              { txt: 'D、100~200', checked: false },
+            ]
+          },
+          {
+            title: '未造成人员伤亡，直接（）百万元以下（不含）经济损失在的一般事故，区、县（市）人民政府可以委托事故发生单位组织事故调查组进行调查',
+            answers: [
+              { txt: 'A、一', checked: false },
+              { txt: 'B、二', checked: true },
+              { txt: 'C、三', checked: false },
+              { txt: 'D、四', checked: false },
+            ]
+          },
+          {
+            title: '下列哪个不属于《杭州市客运出租汽车驾驶员职业道德规范》规定的十字文明用语。',
+            answers: [
+              { txt: 'A、您好', checked: false },
+              { txt: 'B、请', checked: true },
+              { txt: 'C、再见', checked: false },
+              { txt: 'D、欢迎', checked: false },
+            ]
+          },
+          {
+            title: '下列哪个驾驶员符合申请网络预约出租汽车驾驶员的条件（）',
+            answers: [
+              { txt: 'A、62岁的赵某', checked: false },
+              { txt: 'B、19岁有一次酒后驾驶的谭某', checked: true },
+              { txt: 'C、46岁2015年交通违法行为记满12分的孙某', checked: false },
+              { txt: 'D、32岁有4年驾驶经历的王某', checked: false },
+            ]
+          },
+          {
+            title: '下列哪个选项是错误的（）。',
+            answers: [
+              { txt: 'A、发现乘客非法携带或者在托运的行李物品中夹带爆炸性、毒害性、放射性、腐蚀性物质的•应当拒绝其进站、乘车并立即报告客运经营者', checked: false },
+              { txt: 'B、营运中主动提醒乘客保管好自己的财物，发现乘客遗忘的财物，主动送还失主，或者送交公安机矣或者其他有关行政主管部门处理', checked: true },
+              { txt: 'C、不得利用客运车辆非法运载爆炸性、毒害性、放射性、腐蚀性物质或者传染病病原体等危险物质、枪支、弹药和国家规定的管制器具', checked: false },
+              { txt: 'D、为保护隐私需要，可以将客运车内的车载GPS系统拆除', checked: false },
+            ]
+          },
+          {
+            title: '下列哪款车型可以申请网络预约出租汽车运输证（）',
+            answers: [
+              { txt: 'A、行驶里程为62万公里的帕萨特轿车', checked: false },
+              { txt: 'B、开了8年的奥迪A4', checked: true },
+              { txt: 'C、续航里程为200公里的新能源汽车', checked: false },
+              { txt: 'D、计税价格为28万的宝马X1', checked: false },
+            ]
+          },
+          {
+            title: '下列哪款新能源车型可以申请网络预约出租汽车运输证（）',
+            answers: [
+              { txt: 'A、开了6年、续航里程为260公里的', checked: false },
+              { txt: 'B、续航里程为255公里、轴距为2450毫米的', checked: true },
+              { txt: 'C、开了3年、轴距为2550毫米的', checked: false },
+              { txt: 'D、续航里程为245公里、轴距为2500毫米的', checked: false },
+            ]
+          },
+          {
+            title: '下列哪项情形不属于热情周到服务的（）',
+            answers: [
+              { txt: 'A、', checked: false },
+              { txt: 'B、主动帮助乘客放置和提取行李', checked: true },
+              { txt: 'C、遇行动不便乘客、主动帮助山下车', checked: false },
+              { txt: 'D、遇到违法犯罪行为及时报告、勇于斗争', checked: false },
+            ]
+          },
+          {
+            title: '下列哪项情形不属于信访事项处理终结（）',
+            answers: [
+              { txt: 'A、信访人与相矣主体就解决信访事项达成协议并履行完毕的', checked: false },
+              { txt: 'B、行政机矢作出信访事项办理结果、信访人未在规定期限内申请信访复查、复核的', checked: true },
+              { txt: 'C、经信访复查、复核、复核机矣作出最终意见并书面送达信访人的', checked: false },
+              { txt: 'D、虽然行政机关未作出信访事项办理结果，但信访人正打算停止信访', checked: false },
+            ]
+          },
+          {
+            title: '下列哪些路不受“错峰限行”限制（）',
+            answers: [
+              { txt: 'A、文一路', checked: false },
+              { txt: 'B、庆春路', checked: true },
+              { txt: 'C、石桥路', checked: false },
+              { txt: 'D、中河高架', checked: false },
+            ]
+          },
+          {
+            title: '下列哪种车型不属于不受错峰限行限制的车辆（）',
+            answers: [
+              { txt: 'A、省际长途客车', checked: false },
+              { txt: 'B、中型客车', checked: true },
+              { txt: 'C、救护车', checked: false },
+              { txt: 'D、出租车', checked: false },
+            ]
+          },
+          {
+            title: '以下哪个选项不是信访人在信访活动中享有的权利（）',
+            answers: [
+              { txt: 'A、了解信访工作制度及信访事项的处理程序', checked: false },
+              { txt: 'B、要求信访工作人员提供与其提出的信访事项有关的咨询服务', checked: true },
+              { txt: 'C、就信访事项自行选定信访工作人员', checked: false },
+              { txt: 'D、查询其信访事项的办理情况、办理结果', checked: false },
+            ]
+          },
+          {
+            title: '以下哪项不属于各级人民法院、人民检察院受理的信访事项（）',
+            answers: [
+              { txt: 'A、对本级人民法院、人民检察院及其工作人员职务行为的建议、意见或者不服其职务行为的申诉', checked: false },
+              { txt: 'B、对本级或者上一级人民法院、人民检察院工作人员失职、渎职等违纪、违法职务行为的检举、控告', checked: true },
+              { txt: 'C、对本级或者下一级人民法院、人民检察院工作人员失职、渎职等违纪、违法职务行为的检举、控告', checked: false },
+              { txt: 'D、依法应当受理的其他信访事项', checked: false },
+            ]
+          },
+          {
+            title: '以下哪项不属于国家机关及其工作人员在信访工作中应当遵守的规定（）',
+            answers: [
+              { txt: 'A、文明接待、不得刁难、歧视信访人', checked: false },
+              { txt: 'B、按照信访工作的处理程序，及时、依法、公正处理信访事项，不得扣压信访材料，不得敷衍塞责、推诿拖延', checked: true },
+              { txt: 'C、遵守工作纪律，严禁徇私舞弊不得接受信访人请客送礼，不得收受贿赂', checked: false },
+              { txt: 'D、依法答复信访人对有关信访事项办理结果的查询，包括国家秘密、商业秘密、个人隐私等', checked: false },
+            ]
+          },
+          {
+            title: '以下哪项不属于机动车在夜间行驶或者进入隧道行驶时应当开后的（）',
+            answers: [
+              { txt: 'A、前照灯', checked: false },
+              { txt: 'B、示廓灯', checked: true },
+              { txt: 'C、后位灯', checked: false },
+              { txt: 'D、远光灯', checked: false },
+            ]
+          },
+          {
+            title: '以下哪项不属于申请使用原机动车号牌号码应当符合的条件（）',
+            answers: [
+              { txt: 'A、在办理转移登记或者注销登记后六个月内提出申请', checked: false },
+              { txt: 'B、机动车所有人拥有原机动车五年以上', checked: true },
+              { txt: 'C、涉及原机动车的道路交通安全违法行为和交通事故已处理完毕', checked: false },
+              { txt: 'D、涉及原机动车的道路交通安全违法行为和交通事故已处理完毕符合本市机动车登记的其他条件', checked: false },
+            ]
+          },
+          {
+            title: '以下哪项不属于县级以上人民代表大会常务委员会须受理的信访事项（）',
+            answers: [
+              { txt: 'A、对本级或者下一级人民代表大会及其常务委员会通过的地方性法规或者决议、决定的建议', checked: false },
+              { txt: 'B、对本级人民政府制定的地方政府规章和其他规范性文件的建议', checked: true },
+              { txt: 'C、对本级人民代表大会及其常务委员会、人民政府、公安局、人民法院、人民检察院工作的建议、意见', checked: false },
+              { txt: 'D、对本级人民代表大会代表、人民代表大会常务委员会组成人员、人民代表大会常务委员会机矣工作人员职务行为的建议、意见或者不服其职务行为的投诉请求', checked: false },
+            ]
+          },
+          {
+            title: '运价规则调整时，网络预约出租汽车平台公司应当提前（）天向社会公布，并向市价格主管部门、市道路运输管理机构报备。',
+            answers: [
+              { txt: 'A、7', checked: false },
+              { txt: 'B、10', checked: true },
+              { txt: 'C、15', checked: false },
+              { txt: 'D、30', checked: false },
+            ]
+          },
+          {
+            title: '在杭州市从事网络预约出租汽车经营的，应当符合《杭州市网络预约出租汽车和私人小客车合乘管理实施细则（试行）》第五条的规定，具备线上线下服务能力，并在（）行政区域内设立具有法人资格的企业或持有营业执照的分支机构，取得市道路运输管理机构核发的网络预约出租汽车经营许可证。',
+            answers: [
+              { txt: 'A、全国', checked: false },
+              { txt: 'B、本省', checked: true },
+              { txt: 'C、本市', checked: false },
+              { txt: 'D、本县', checked: false },
+            ]
+          },
+          {
+            title: '浙A.XXXE3的机动车在星期三上午8点半可以驶人（）',
+            answers: [
+              { txt: 'A、庆春路', checked: false },
+              { txt: 'B、凤起路', checked: true },
+              { txt: 'C、建国路', checked: false },
+              { txt: 'D、之江路', checked: false },
+            ]
+          },
+          {
+            title: '自申请考试之日前（）年内没有被吊销出租汽车驾驶员，从业资格证记录的驾驶员可申请网络预约出租汽车驾驶员',
+            answers: [
+              { txt: 'A、1', checked: false },
+              { txt: 'B、2', checked: true },
+              { txt: 'C、3', checked: false },
+              { txt: 'D、4', checked: false },
+            ]
+          },
+        ]
+      },
+
+    })
+  </script>
+</body>
+
+</html>
