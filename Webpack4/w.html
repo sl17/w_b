@@ -12,7 +12,7 @@
     }
 
     #app {
-      padding: 20px 10px ;
+      padding: 20px 10px;
     }
 
     .selectBox {
@@ -22,21 +22,26 @@
     .selectBox h4 {
       line-height: 30px;
       font-size: 16px;
+      margin-bottom: 5px;
     }
 
     .selectBox p {
       cursor: default;
       font-size: 16px;
       margin-left: 12px;
-      line-height: 24px;
+      line-height: 30px;
     }
-
+    .selectBox span{
+      display: inline-block;
+      min-width: 200px;
+    }
     .selectBox span.suc {
       color: #23a02d;
       font-weight: bold;
       cursor: pointer;
       position: relative;
     }
+
     .selectBox span.err {
       color: #f70101;
       font-weight: bold;
@@ -49,22 +54,23 @@
       color: #23a02d;
       font-weight: bold;
       position: absolute;
-      top: 3px;
+      top: 6px;
       left: -20px;
       width: 14px;
       font-size: 12px;
       height: 14px;
-      line-height: 15px;
+      line-height: 14px;
       text-align: center;
       border: 1px solid #23a02d;
       border-radius: 10px;
     }
+
     .selectBox span.err::after {
       content: '×';
       color: #f70101;
       font-weight: bold;
       position: absolute;
-      top: 3px;
+      top: 6px;
       left: -20px;
       width: 14px;
       font-size: 12px;
@@ -100,7 +106,7 @@
           </div>
           `,
       methods: {
-        selAnswers(i,s) {
+        selAnswers(i, s) {
           this.seleckd = i;
           this.checked = s
         }
@@ -260,7 +266,8 @@
               { txt: 'D、四人，五人', checked: false },
             ]
           },
-          {index: 16,
+          {
+            index: 16,
             title: '根据《浙江省信访条例》的相关规定，信访人在信访活动中，下列哪个选项不是信访人应当履行的义务（）。',
             answers: [
               { txt: 'A、依照法定的方式和程序提出信访事项', checked: true },
